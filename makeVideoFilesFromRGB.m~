@@ -1,0 +1,28 @@
+function [ output_args ] = makeVideoFilesFromRGB( path )
+%MAKEVIDEOFILESFROMRGB Summary of this function goes here
+%   Detailed explanation goes here
+actfolders = {'breakfast'  'lunch' 'working'};
+savePath = '/usr/not-backed-up/vids/';
+
+
+for fold = actfolders
+  videos = dir([path '/' fold{1}]);
+  
+  for v = 3 : length(videos) % 3 for escaping . and .. 
+    imagesDir = [path '/' fold{1} '/' videos(v).name '/kinect_rgb/' ];
+    list = dir(imagesDir);
+    imageExtension = list(3).name(end-2:end);
+    
+    [status,output] = system(['ffmpeg  -i ' imagesDir 'Kinect_%04d.' imageExtension ' -s 640x480  -vcodec libx264 -crf 30'...
+                      ' ' savePath videos(v).name '.mp4']);
+                    
+    if status == 0
+      
+    end
+    
+  end
+  
+end
+
+end
+
