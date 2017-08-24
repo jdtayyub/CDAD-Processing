@@ -1,10 +1,10 @@
-function [ output_args ] = skeletonDsplaying(  )
+function [ output_args ] = skeletonDsplaying( baseHDpath )
 %SKELETONDSPLAYING Summary of this function goes here
 %   Detailed explanation goes here
 
-oldpath = '/media/Transcend/Jawad_DataSet_Raw/';
+oldpath = [baseHDpath 'Jawad_DataSet_Raw/'];
 actfolders = {'breakfast'  'lunch' 'working'};
-FinalPath = '/media/Transcend/Jawad_DataSet_Final/';
+FinalPath = [baseHDpath 'Jawad_DataSet_Final/'];
 
 
 vCount = 1;

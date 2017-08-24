@@ -1,0 +1,37 @@
+function [ output_args ] = skelTracksFix( allSkel )
+%UNTITLED Load the skeletons into the skel file using Load ALL skeleton function and pass that into the input args, 
+% Function will return the skeleton tracks per each person where column
+% corresponds to the person id . 
+% video 1-20 , 43-62 : 1 person
+% video 21-42 , 2 person
+%   Detailed explanation goes here
+fixedSkels = {};
+for v = 1 : length(allSkel)
+newSkel = {};
+skel = allSkel{v};
+history = zeros(size(skel,1),size(skel,2));
+    for p=1  : size(skel,2) % perform this action for each person skeleton detected
+        track = {};        
+        for frame = 2 : size(skel,1)
+            for nP = 1 : size(skel,2)
+                minIdx = 1;
+                minVal = Inf;
+                if ~isempty(skel{frame,nP})
+                    val = compareSkels(skel{frame-1,p},skel{frame,nP}); 
+                    if val < minVal
+                        minIdx = nP;
+                        minVal = val;
+                    end
+                end
+            end
+            
+            track(frame,1) = skel(frame,minIdx);
+            skel(frame,minIdx) = {Inf};
+        end 
+        newSkel(p) = track;
+    end
+    fixedSkels = [fixedSkels;newSkel];
+end
+
+end
+
